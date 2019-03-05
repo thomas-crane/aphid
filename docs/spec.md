@@ -172,6 +172,8 @@ and
 
 + `args: MessageArgs` is an object which contains the arguments which this command was invoked with.
 
+The `args: MessageArgs` is an optional parameter, and may be omitted if the command has no parameters. If it is not omitted and the command has no parameters, an empty object literal (`{}`) will be passed as the argument.
+
 The [`@Command`](#command-decorator-interface) decorator should be provided with information that describes the command, and how it can be invoked.
 
 ```typescript
