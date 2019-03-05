@@ -151,9 +151,9 @@ class DbService {
 
 ## Commands
 
-Commands are methods of module classes. They should be decorated with the [`@Command`](#command-decorator-interface) decorator which describes how the command.
+Commands are methods of module classes. They should be decorated with the [`@Command`](#command-decorator-interface) decorator which describes the command.
 
-All command methods should have the same parameters, and this should be enforced by the command decorator. A soft error should be raised.
+All command methods should have the same parameters, and this should be enforced by the command decorator. A soft error should be raised if the parameters of a command method are incorrect.
 
 The method signature of a command method should be the following.
 
