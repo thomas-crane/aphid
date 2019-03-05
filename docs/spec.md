@@ -11,6 +11,7 @@
   + [Services](#services)
 + [Dependency injection](#dependency-injection)
 + [Commands](#commands)
++ [Event listeners](#event-listeners)
 + [Formal definitions](#formal-definitions)
   + [Module decorator interface](#module-decorator-interface)
   + [Partial module decorator](#partial-module-decorator)
@@ -19,6 +20,8 @@
   + [Parameter decorator interface](#parameter-decorator-interface)
   + [Range interface](#range-interface)
   + [Parameter kind enum](#parameter-kind-enum)
+  + [Event listener decorator](#event-listener-decorator)
+  + [Event enum](#event-enum)
 
 ## Terminology
 
@@ -122,7 +125,9 @@ All command methods should have the same parameters, and this should be enforced
 The method signature of a command method should be the following.
 
 ```typescript
-function pingPong(client: AphidClient, message: Message, args: MessageArgs) { }
+pingPong(client: AphidClient, message: Message, args: MessageArgs) {
+  // ...
+}
 ```
 
 Where
@@ -142,8 +147,8 @@ The [`@Command`](#command-decorator-interface) decorator should be provided with
   trigger: ['ping', 'p'],
   description: 'Replies to the command with a "Pong!" message.',
 })
-function pingPong(client: AphidClient, message: Message, args: MessageArgs) {
-
+pingPong(client: AphidClient, message: Message, args: MessageArgs) {
+  // ...
 }
 ```
 
@@ -165,12 +170,37 @@ The [`@Parameter`](#parameter-decorator-interface) decorator can be used to desc
   range: { from: '0', to: '1d' },
   required: true,
 })
-function mute(client: AphidClient, message: Message, args: MessageArgs) {
+mute(client: AphidClient, message: Message, args: MessageArgs) {
   // ...
 }
 ```
 
 Assuming the parameter is required and the command was invoked correctly, `args` should be guaranteed to contain a property with the same name as the parameter. The `kind` of the parameter will determine the type of the value of that property.
+
+## Event listeners
+
+The other type of method which can be included in a module is an event listener method. An event listener method is decorated with the `@EventListener` decorator, and provides a way of attaching event listeners to the Discord.js client.
+
+```typescript
+@EventListener(Event.GuildMemberAdd)
+onGuildMemberAdd(client: AphidClient, member: GuildMember) {
+  // ...
+}
+```
+
+Similarly to command methods, event listener methods should also have partially consistent parameters. All event listener methods should have a client as the first parameter, e.g.
+
+```typescript
+eventListener(client: AphidClient) {
+  // ...
+}
+```
+
+Where
+
++ `client: AphidClient` is the instance of the `AphidClient` for which the event was raised.
+
+The rest of the method's parameters will depend on the type of event which is being listened to. It should be ensured that `client: AphidClient` is the first parameter of any event listener method, and a soft error should be thrown if it is not. All other parameters should have no checking performed on them, and should be passed to the method as `any`.
 
 ## Formal definitions
 
@@ -330,5 +360,63 @@ enum ParameterKind {
    * but **not** `10.5s`, `0.5m`.
    */
   Time,
+}
+```
+
+### Event listener decorator
+
+The event listener decorator takes a value from the `Event` enum as its parameter.
+
+### Event enum
+
+The event enum lists the events which can be listened to using the `@EventListener` decorator.
+
+```typescript
+enum Event {
+  ChannelCreate
+  ChannelDelete
+  ChannelPinsUpdate
+  ChannelUpdate
+  ClientUserGuildSettingsUpdate
+  ClientUserSettingsUpdate
+  Debug
+  Disconnect
+  EmojiCreate
+  EmojiDelete
+  EmojiUpdate
+  Error
+  GuildBanAdd
+  GuildBanRemove
+  GuildCreate
+  GuildDelete
+  GuildMemberAdd
+  GuildMemberAvailable
+  GuildMemberRemove
+  GuildMembersChunk
+  GuildMemberSpeaking
+  GuildMemberUpdate
+  GuildUnavailable
+  GuildUpdate
+  Message
+  MessageDelete
+  MessageDeleteBulk
+  MessageReactionAdd
+  MessageReactionRemove
+  MessageReactionRemoveAll
+  MessageUpdate
+  PresenceUpdate
+  RateLimit
+  Ready
+  Reconnecting
+  Resume
+  RoleCreate
+  RoleDelete
+  RoleUpdate
+  TypingStart
+  TypingStop
+  UserNoteUpdate
+  UserUpdate
+  VoiceStateUpdate
+  Warn
 }
 ```
