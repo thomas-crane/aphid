@@ -22,9 +22,9 @@ Aphid is far from functional. In fact, *it doesn't even have any TypeScript code
 
 Before any code is written, the documents in the `docs/` folder (particularly `spec.md`) will be continuously refined. While this project is still in its specification phase, your contributions are extremely valuable!
 
-Now is the best time to request changes, suggest new ideas, or request the deletion of a feature. These kind of changes can be discussed via an issue or a pull request, and implemented into the spec without any actual code changes. This means that you don't need to wait for code and tests to be written, you won't need to wait for the next major release to see breaking changes implemented.
+Now is the best time to request changes, suggest new ideas, or request the deletion of a feature. These kind of changes can be discussed via an issue or a pull request, and implemented into the spec without any actual code changes. This means that you don't need to wait for code and tests to be written, and you won't need to wait for the next major release to see breaking changes implemented.
 
-If you feel like contributing to this project in it's early phases, have a read of the current [specification!](docs/spec.md)
+If you feel like contributing to this project in its early phases, have a read of the current [specification!](docs/spec.md)
 
 The provided [example](docs/example.md) is a good resource to get a feel for how the spec translates into a real world project.
 
