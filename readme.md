@@ -1,6 +1,6 @@
 # Aphid
 
-A Discord library built for TypeScript.
+A Discord library built for TypeScript. 🌱🦗
 
 ## Contents
 
