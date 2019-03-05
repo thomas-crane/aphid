@@ -4,8 +4,14 @@
   "description": "A Discord library built for TypeScript.",
   "main": "dist/index.js",
   "scripts": {
+    "lint": "tslint -p .",
+    "compile": "tsc -p .",
     "test": "mocha -r ts-node/register test/**/*.spec.ts"
   },
+  "files": [
+    "dist/",
+    "license.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thomas-crane/aphid.git"
