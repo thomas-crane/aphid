@@ -6,6 +6,8 @@
 + [Contents](#contents)
 + [Terminology](#terminology)
 + [Goals](#goals)
++ [Aphid client](#aphid-client)
+  + [Loading commands](#loading-commands)
 + [Project structure](#project-structure)
   + [Modules](#modules)
   + [Services](#services)
@@ -13,6 +15,7 @@
 + [Commands](#commands)
 + [Event listeners](#event-listeners)
 + [Formal definitions](#formal-definitions)
+  + [Aphid client interface](#aphid-client-interface)
   + [Module decorator interface](#module-decorator-interface)
   + [Partial module decorator](#partial-module-decorator)
   + [Service decorator](#service-decorator)
@@ -42,6 +45,36 @@ Under the hood, Aphid uses Discord.js to do the hard work. The purpose of Aphid 
 + Be tolerant of soft errors, but have a zero tolerance policy for undefined behaviour.
 
 With these in mind, the Aphid library can be defined as follows.
+
+## Aphid client
+
+The `AphidClient` class is the main point of interaction for the Aphid Discord library. `AphidClient` extends the familiar Discord.js `Client` class, so anything which is available using the Discord.js client will be available when using an Aphid client.
+
+The Aphid client defines several additional methods which can be used for Aphid specific functionality.
+
+When constructing a new `AphidClient`, some configuration values must be provided.
+
+```typescript
+const aphidClient = new AphidClient({
+  prefix: 'a!',
+  author: 'tcrane',
+});
+```
+
+### Loading commands
+
+The Aphid client should provide a way to load modules and services. The module loading method should recursively explore a given folder in order to discover all of the modules and services.
+
+```typescript
+aphidClient.load('./commands').then(() => {
+  console.log('Loaded commands');
+  aphidClient.login(process.env.TOKEN);
+}).catch((err) => {
+  console.log('There was an error loading commands.');
+  console.error(err);
+  process.exit(1);
+});
+```
 
 ## Project structure
 
@@ -205,6 +238,24 @@ The rest of the method's parameters will depend on the type of event which is be
 ## Formal definitions
 
 The code displayed in the examples throughout this specification are not designed to be exhaustive demonstrations of the API. This section of the specification properly defines some of the types used throughout this specification.
+
+### Aphid client interface
+
+This describes the object which is passed to the `AphidClient` constructor
+
+```typescript
+interface AphidClientOptions {
+  /**
+   * The prefix which is used to denote a command.
+   */
+  prefix: string;
+  /**
+   * The author of the bot. This is optional
+   * and defaults to `undefined`.
+   */
+  author?: string;
+}
+```
 
 ### Module decorator interface
 
