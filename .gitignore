@@ -1,0 +1,9 @@
+# config files
+.vscode/
+.DS_Store
+
+# node modules
+node_modules
+
+# build result
+dist/

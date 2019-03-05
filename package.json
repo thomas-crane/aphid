@@ -1,0 +1,24 @@
+{
+  "name": "aphid",
+  "version": "1.0.0",
+  "description": "A Discord library built for TypeScript.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomas-crane/aphid.git"
+  },
+  "keywords": [
+    "discord",
+    "typescript",
+    "library"
+  ],
+  "author": "tcrane",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thomas-crane/aphid/issues"
+  },
+  "homepage": "https://github.com/thomas-crane/aphid#readme"
+}
