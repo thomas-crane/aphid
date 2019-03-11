@@ -16,7 +16,14 @@
     "member-access": [
       true,
       "no-public"
-    ]
+    ],
+    "ban-types": [
+      true,
+      ["Object"],
+      ["Number"],
+      ["String"]
+    ],
+    "object-literal-sort-keys": false
   },
   "rulesDirectory": []
 }
