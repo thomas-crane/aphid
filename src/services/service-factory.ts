@@ -41,10 +41,10 @@ export class ServiceFactory {
    * Adds a service to the services which this factory can provide.
    * @param type The type of service to create.
    */
-  addService<T>(type: Type<T>) {
+  addService<T extends object>(type: Type<T>) {
     const service = this.create(type);
     if (service) {
-      this.store.add(service as any);
+      this.store.add(service);
     }
   }
 }
