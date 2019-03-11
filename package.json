@@ -1,6 +1,6 @@
 {
   "name": "aphid",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A Discord library built for TypeScript.",
   "main": "dist/index.js",
   "scripts": {
