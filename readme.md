@@ -18,15 +18,11 @@ You can read about what Aphid hopes to be in the [spec document.](docs/spec.md) 
 
 ## Early development
 
-Aphid is far from functional. In fact, *it doesn't even have any TypeScript code yet.*
+This is the development branch of Aphid.
 
-Before any code is written, the documents in the `docs/` folder (particularly `spec.md`) will be continuously refined. While this project is still in its specification phase, your contributions are extremely valuable!
+Although the spec is still not finalised, many of the core modules that Aphid uses can start to be created. This way, Aphid will have a solid and well tested foundation upon which the spec can be implemented.
 
-Now is the best time to request changes, suggest new ideas, or request the deletion of a feature. These kind of changes can be discussed via an issue or a pull request, and implemented into the spec without any actual code changes. This means that you don't need to wait for code and tests to be written, and you won't need to wait for the next major release to see breaking changes implemented.
-
-If you feel like contributing to this project in its early phases, have a read of the current [specification!](docs/spec.md)
-
-The provided [example](docs/example.md) is a good resource to get a feel for how the spec translates into a real world project.
+Some of the core modules which are in progress now include the dependency injection system, and the `@Module` system.
 
 ## Acknowledgements
 
