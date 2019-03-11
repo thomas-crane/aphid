@@ -2,6 +2,19 @@ import { InstanceStore } from '../models/instance-store';
 import { Type } from '../models/type';
 import * as reflection from '../reflection';
 
+// similarly to the InstaceStore, we want to try our hardest
+// to only allow custom class types to be created by the ServiceFactory.
+// If a user is able to pass a non-custom class type, it is probably by
+// mistake, so we don't want the ServiceFactory to silently allow it.
+const PROHIBITED_TYPES = new Set([
+  Number,
+  String,
+  Boolean,
+  Function,
+  Object,
+  Symbol,
+]);
+
 /**
  * A class for creating instances of classes which depend upon `@Service` classes.
  */
@@ -20,8 +33,9 @@ export class ServiceFactory {
   create<T>(type: Type<T>): T {
     if (typeof type !== 'function'
       || typeof (type.constructor) !== 'function'
-      || type.constructor.name !== Function.name) {
-      throw new Error(`Parameter "type" should be a class type, not ${typeof type}`);
+      || type.constructor.name !== Function.name
+      || PROHIBITED_TYPES.has(type as any)) {
+      throw new TypeError(`Parameter "type" should be a class type, not ${typeof type}`);
     }
     const dependencies = reflection.util.getParams(type);
 
