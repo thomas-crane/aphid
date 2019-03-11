@@ -51,6 +51,18 @@ describe('ServiceFactory', () => {
   describe('#create()', () => {
     const factory = new ServiceFactory();
     factory.addService(NoDeps);
+    it('should throw an error if the value is not a class type.', () => {
+      expect(() => factory.create(new NoDeps() as any), 'Did not throw for class instance.').to.throw(TypeError);
+      expect(() => factory.create('hello' as any), 'Did not throw for string.').to.throw(TypeError);
+      expect(() => factory.create(452 as any), 'Did not throw for number.').to.throw(TypeError);
+      expect(() => factory.create(((): any => undefined) as any), 'Did not throw for function.').to.throw(TypeError);
+      expect(() => factory.create({} as any), 'Did not throw for object literal.').to.throw(TypeError);
+      expect(() => factory.create(undefined), 'Did not throw for undefined.').to.throw(TypeError);
+      expect(() => factory.create(null), 'Did not throw for null.').to.throw(TypeError);
+      expect(() => factory.create(Number), 'Did not throw for Number type.').to.throw(TypeError);
+      expect(() => factory.create(Function), 'Did not throw for Function type.').to.throw(TypeError);
+      expect(() => factory.create(Object), 'Did not throw for Object type.').to.throw(TypeError);
+    });
     it('should create the desired instance.', () => {
       const inst = factory.create(NoDeps);
       expect(inst instanceof NoDeps).to.equal(true, 'Did not create an instance of the correct type.');
