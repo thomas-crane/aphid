@@ -2,7 +2,7 @@ import { InstanceStore } from '../models/instance-store';
 import { Type } from '../models/type';
 import * as reflection from '../reflection';
 
-// similarly to the InstaceStore, we want to try our hardest
+// similarly to the InstanceStore, we want to try our hardest
 // to only allow custom class types to be created by the ServiceFactory.
 // If a user is able to pass a non-custom class type, it is probably by
 // mistake, so we don't want the ServiceFactory to silently allow it.
