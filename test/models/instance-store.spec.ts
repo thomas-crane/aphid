@@ -71,6 +71,8 @@ describe('InstanceStore', () => {
       expect(() => store.add(() => undefined), 'Did not throw for function.').to.throw(TypeError);
       expect(() => store.add(true as any), 'Did not throw for boolean.').to.throw(TypeError);
       expect(() => store.add(Symbol('test') as any), 'Did not throw for symbol.').to.throw(TypeError);
+      expect(() => store.add(null), 'Did not throw for null.').to.throw(TypeError);
+      expect(() => store.add(undefined), 'Did not throw for undefined.').to.throw(TypeError);
     });
     it('should add the instance to the store.', () => {
       const store = new InstanceStore();
