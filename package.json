@@ -3,10 +3,27 @@
   "version": "0.1.0",
   "description": "A Discord library built for TypeScript.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "lint": "tslint -p .",
     "compile": "tsc -p .",
-    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+    "test": "nyc mocha"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/"
+    ],
+    "exclude": [
+      "src/**/index.ts"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "all": true
   },
   "files": [
     "dist/",
@@ -33,11 +50,15 @@
     "@types/node": "^11.10.4",
     "chai": "^4.2.0",
     "mocha": "^6.0.2",
+    "nyc": "^13.3.0",
+    "source-map-support": "^0.5.11",
     "ts-node": "^8.0.2",
     "tslint": "^5.13.1",
     "typescript": "^3.3.3333"
   },
   "dependencies": {
+    "chalk": "^2.4.2",
+    "discord.js": "^11.4.2",
     "reflect-metadata": "^0.1.13"
   }
 }
