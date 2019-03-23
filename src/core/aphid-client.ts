@@ -50,6 +50,8 @@ export class AphidClient extends Client {
       return;
     }
 
-    commands.loader.invoke(cmd, this, message);
+    const command = commands.loader.getCommand(cmd);
+    const moduleInstance = modules.loader.getInstance(command.moduleName);
+    moduleInstance[command.methodKey].call(moduleInstance, this, message);
   }
 }

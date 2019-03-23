@@ -1,7 +1,4 @@
-import { Message } from 'discord.js';
-import { AphidClient } from '../core';
 import log from '../log';
-import * as modules from '../modules';
 import { LoadedCommand } from './loaded-command';
 
 /**
@@ -54,14 +51,10 @@ export class CommandLoader {
   }
 
   /**
-   * Invokes the command which uses the trigger.
-   * @param trigger The trigger of the command to invoke.
-   * @param client The client instance to provide to the command.
-   * @param message The message which caused the invocation.
+   * Gets the command which is using this trigger.
+   * @param trigger The trigger of the command to get.
    */
-  invoke(trigger: string, client: AphidClient, message: Message) {
-    const cmd = this.triggerMap.get(trigger);
-    const moduleInstance = modules.loader.getInstance(cmd.moduleName);
-    moduleInstance[cmd.methodKey].call(moduleInstance, client, message);
+  getCommand(trigger: string): LoadedCommand {
+    return this.triggerMap.get(trigger);
   }
 }
