@@ -4,6 +4,8 @@ import log from '../log';
 import { Type } from '../models/type';
 import * as modules from '../modules';
 import { AphidClientOptions } from './aphid-client-options';
+import { ParameterKind } from '../messages/parameter-kind';
+import { MessageArgs } from '../messages/message-args';
 
 /**
  * A discord bot client.
@@ -43,15 +45,57 @@ export class AphidClient extends Client {
       return;
     }
     // get the command part.
-    const cmd = message.content.split(' ')[0].slice(this.aphidOptions.prefix.length);
+    const messageParts = message.content.split(' ');
+    const cmd = messageParts[0].slice(this.aphidOptions.prefix.length);
+    const argParts = messageParts.slice(1);
 
     // check if there are any triggers for this command.
     if (!commands.loader.hasTrigger(cmd)) {
       return;
     }
 
-    const command = commands.loader.getCommand(cmd);
+    const [command, commandParams] = commands.loader.getCommand(cmd);
     const moduleInstance = modules.loader.getInstance(command.moduleName);
-    moduleInstance[command.methodKey].call(moduleInstance, this, message);
+
+    const messageArgs: MessageArgs = {
+      rest: argParts.slice(commandParams.length),
+    };
+    const errors: any[] = [];
+    // parse arguments.
+    for (let i = 0; i < commandParams.length; i++) {
+      const param = commandParams[i];
+      const arg = argParts[i];
+      // does argParts contain an entry?
+      if (param.info.required === true) {
+        if (arg === undefined) {
+          // required arg not provided.
+          // report error
+          break;
+        }
+      }
+
+      // we have an argument, check that it matches the type of the parameter.
+      if (arg !== undefined) {
+        if (param.info.kind === ParameterKind.Number) {
+          if (isNaN(arg as any)) {
+            // report error
+            continue;
+          } else {
+            const numValue = +arg;
+
+            // do range checking.
+
+            messageArgs[param.info.name] = numValue;
+          }
+        }
+      }
+    }
+
+    if (errors.length > 0) {
+      // invoke error handler
+    } else {
+      moduleInstance[command.methodKey].call(moduleInstance, this, message, messageArgs);
+    }
+
   }
 }

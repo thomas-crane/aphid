@@ -1,5 +1,8 @@
 import log from '../log';
 import { LoadedCommand } from './loaded-command';
+import { LoadedParameter } from './loaded-parameter';
+
+type ParameterMap = Map<string, LoadedParameter[]>;
 
 /**
  * A manager class for loading and storing commands.
@@ -7,6 +10,8 @@ import { LoadedCommand } from './loaded-command';
 export class CommandLoader {
   private triggerMap: Map<string, LoadedCommand>;
   private moduleMap: Map<string, LoadedCommand[]>;
+
+  private parameterMap: Map<string, ParameterMap>;
 
   constructor() {
     this.triggerMap = new Map();
@@ -43,6 +48,23 @@ export class CommandLoader {
   }
 
   /**
+   * Adds the parameter to the parameter map of this command loader.
+   * @param parameter The parameter to add.
+   */
+  addParameter(parameter: LoadedParameter) {
+    if (!this.parameterMap.has(parameter.moduleName)) {
+      this.parameterMap.set(parameter.moduleName, new Map());
+    }
+    const paramMap = this.parameterMap.get(parameter.moduleName);
+    if (!paramMap.has(parameter.methodKey)) {
+      paramMap.set(parameter.methodKey, []);
+    }
+    // make sure no parameter with the same name already exists. Produce a warning if it does.
+    // ...
+    paramMap.get(parameter.methodKey).push(parameter);
+  }
+
+  /**
    * Returns whether or not there is a command using this trigger.
    * @param trigger The trigger to check for.
    */
@@ -54,7 +76,9 @@ export class CommandLoader {
    * Gets the command which is using this trigger.
    * @param trigger The trigger of the command to get.
    */
-  getCommand(trigger: string): LoadedCommand {
-    return this.triggerMap.get(trigger);
+  getCommand(trigger: string): [LoadedCommand, LoadedParameter[]] {
+    const cmd = this.triggerMap.get(trigger);
+    const parameters = this.parameterMap.get(cmd.moduleName).get(cmd.methodKey);
+    return [cmd, parameters];
   }
 }
